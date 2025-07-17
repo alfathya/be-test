@@ -11,3 +11,54 @@ datasource db {
 }
 
 // Declare schemas here
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  fullName    String
+  firstName   String?
+  lastName    String?
+  phoneNumber String?
+  country     String?
+  aboutYou    String?  @db.Text
+  role        UserRole @default(USER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  fileUploads FileUpload[]
+  
+  @@map("users")
+}
+
+model FileUpload {
+  id          Int           @id @default(autoincrement())
+  filename    String
+  originalName String
+  filePath    String?
+  fileUrl     String?
+  status      ProcessStatus @default(PENDING)
+  uploadedBy  Int
+  processedAt DateTime?
+  errorMessage String?      @db.Text
+  recordsProcessed Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relations
+  user        User          @relation(fields: [uploadedBy], references: [id])
+  
+  @@map("file_uploads")
+}
+
+enum ProcessStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}

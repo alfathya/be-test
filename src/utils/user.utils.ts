@@ -1,10 +1,10 @@
-import { Roles } from '@prisma/client';
+import { UserRole } from "@prisma/client";
 
-export function transformRoleToEnumRole(role:string){
-    switch(role){
-        case "ADMIN":
-            return Roles.ADMIN
-        default:
-            return Roles.USER
-    }
+export function transformRoleToEnumRole(role: string): UserRole {
+  switch (role) {
+    case "ADMIN":
+      return UserRole.ADMIN;
+    default:
+      return UserRole.USER;
+  }
 }

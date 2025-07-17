@@ -1,4 +1,4 @@
-import { PrismaClient, Roles } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 export async function seedAdmin(prisma:PrismaClient){
     const countAdmin = await prisma.user.count({where:{
@@ -9,11 +9,11 @@ export async function seedAdmin(prisma:PrismaClient){
         const hashedPassword = await bcrypt.hash("admin123", 12)
     
         await prisma.user.create({
-            data:{
-                fullName:"Admin",
-                password : hashedPassword,
-                email:"admin@test.com",
-                role :Roles.ADMIN
+            data: {
+                fullName: "Admin",
+                password: hashedPassword,
+                email: "admin@test.com",
+                role: "ADMIN"
             }
         })
         

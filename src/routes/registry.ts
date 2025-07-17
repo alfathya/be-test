@@ -1,7 +1,9 @@
 import ExampleRoutes from "./Example";
+import AuthRoutes from "./Auth";
 
 const RoutesRegistry = {
-    ExampleRoutes
+    ExampleRoutes,
+    AuthRoutes
 };
 
 export default RoutesRegistry;
