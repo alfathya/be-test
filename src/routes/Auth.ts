@@ -1,9 +1,10 @@
-import { Router } from 'express';
-import * as AuthController from '$controllers/rest/AuthController';
+import { Router } from "express";
+import * as AuthController from "$controllers/rest/AuthController";
+import { validateRegister, validateLogin } from "$validations/authValidation";
 
-const AuthRoutes = Router({mergeParams:true})
+const AuthRoutes = Router({ mergeParams: true });
 
-AuthRoutes.post("/register", AuthController.register);
-AuthRoutes.post("/login", AuthController.login);
+AuthRoutes.post("/register", validateRegister, AuthController.register);
+AuthRoutes.post("/login", validateLogin, AuthController.login);
 
 export default AuthRoutes;

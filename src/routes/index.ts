@@ -21,6 +21,7 @@ router.get("/ping", (req: Request, res: Response) => {
 
 router.use("/example", RoutesRegistry.ExampleRoutes)
 router.use("/auth", RoutesRegistry.AuthRoutes)
+router.use("/upload", RoutesRegistry.UploadRoutes)
 
 
 router.all("*", (req: Request, res: Response) => {
