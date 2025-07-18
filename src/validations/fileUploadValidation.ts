@@ -11,7 +11,6 @@ export const validateFileUpload = (req: Request, res: Response, next: NextFuncti
       });
     }
 
-    // File size validation (100MB)
     const maxSize = 100 * 1024 * 1024; // 100MB
     if (file.size > maxSize) {
       return res.status(400).json({
@@ -20,11 +19,10 @@ export const validateFileUpload = (req: Request, res: Response, next: NextFuncti
       });
     }
 
-    // File type validation
     const allowedMimeTypes = [
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-      'application/vnd.ms-excel', // .xls
-      'text/csv' // .csv
+      'application/vnd.ms-excel',
+      'text/csv'
     ];
 
     if (!allowedMimeTypes.includes(file.mimetype)) {
@@ -34,7 +32,6 @@ export const validateFileUpload = (req: Request, res: Response, next: NextFuncti
       });
     }
 
-    // File extension validation
     const allowedExtensions = ['.xlsx', '.xls', '.csv'];
     const fileExtension = file.originalname.toLowerCase();
     const hasValidExtension = allowedExtensions.some(ext => fileExtension.endsWith(ext));

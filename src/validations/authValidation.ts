@@ -4,7 +4,6 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
   try {
     const { email, password, confirmPassword, firstName, lastName } = req.body;
 
-    // Required fields
     if (!email) {
       return res.status(400).json({
         status: false,
@@ -40,7 +39,6 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
       });
     }
 
-    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
@@ -49,7 +47,6 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
       });
     }
 
-    // Password match validation
     if (password !== confirmPassword) {
       return res.status(400).json({
         status: false,
@@ -57,7 +54,6 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
       });
     }
 
-    // Password strength validation
     if (password.length < 8) {
       return res.status(400).json({
         status: false,
@@ -92,7 +88,6 @@ export const validateLogin = (req: Request, res: Response, next: NextFunction) =
       });
     }
 
-    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
