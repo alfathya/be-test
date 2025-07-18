@@ -62,7 +62,7 @@ export async function getFileByUserId(
     };
 
     const totalFiles = await prisma.fileUpload.count({
-      where: whereCondition,
+      where: finalWhere,
     });
 
     const files = await prisma.fileUpload.findMany({
@@ -77,7 +77,7 @@ export async function getFileByUserId(
         processedAt: true,
         createdAt: true,
       },
-      orderBy: dynamicFilter,
+      orderBy: dynamicFilter.orderBy,
       skip: dynamicFilter.skip,
       take: dynamicFilter.take,
     });
