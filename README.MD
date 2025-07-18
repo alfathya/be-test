@@ -1,17 +1,5 @@
 # Node Wave Base Repositories for Backend
 
-
-## Tech Stacks 
-
-- Language : TypeScript 
-- ORM : Prisma 
-- Database : MySQL
-- HTTP Framework : Express 
-- Logging : Winston + Morgan
-
-> [!NOTE]  
->  As stated in Getting Started parts of our notion, don't forget to make sure that you have Node.js >= 16.14.2 and MySQL >= 8.0.3
-
 ## Tech Stack
 
 * **Language**: TypeScript
