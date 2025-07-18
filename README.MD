@@ -59,19 +59,6 @@ This repository includes:
 
 ---
 
-## Background Job Flow
-
-```mermaid
-graph TD
-  A[Upload Excel File] --> B[Status: PENDING]
-  B --> C[Start Background Job]
-  C --> D{Simulated Parsing}
-  D -->|90%| E[Status: SUCCESS → Save to DB]
-  D -->|10%| F[Status: FAILED]
-```
-
----
-
 ## Postman Testing Guide
 
 1. Import `be-test-nodewave.postman_collection.json` to Postman
@@ -104,7 +91,6 @@ graph TD
 ```http
 GET /api/upload/files?page=1&rows=5
 GET /api/upload/files?status=SUCCESS
-GET /api/data-check/products?page=1&limit=10
 ```
 
 ---
@@ -142,7 +128,6 @@ npm install
 
 # Setup environment
 cp .env.example .env
-# (update your database URL, JWT secret, etc.)
 
 # Migrate DB
 npx prisma migrate dev --name init
