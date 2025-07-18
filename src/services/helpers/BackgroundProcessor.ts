@@ -1,45 +1,74 @@
 import { PrismaClient, ProcessStatus } from "@prisma/client";
 import Logger from "$pkg/logger";
+import { ExcelParser } from "./ExcelParser";
 
 const prisma = new PrismaClient();
 
-export function processExcelFile(fileId: number) {
+export async function processExcelFile(fileId: number) {
   Logger.info(`Starting background processing for file ID: ${fileId}`);
 
-  updateFileStatus(fileId, ProcessStatus.PROCESSING);
+  await updateFileStatus(fileId, ProcessStatus.PROCESSING);
 
-  const processingTime = Math.random() * 2000 + 3000;
+  try {
+    const fileRecord = await prisma.fileUpload.findUnique({
+      where: { id: fileId },
+      select: { id: true, filePath: true, fileUrl: true, filename: true },
+    });
 
-  setTimeout(async () => {
-    try {
-      const isSuccess = Math.random() > 0.1;
+    if (!fileRecord) {
+      throw new Error("File not found");
+    }
 
-      if (isSuccess) {
-        const recordsProcessed = Math.floor(Math.random() * 100) + 10;
+    let actualFilePath = fileRecord.filePath;
+    if (!actualFilePath && fileRecord.fileUrl) {
+      actualFilePath = fileRecord.fileUrl.replace("/uploads/", "uploads/");
+      actualFilePath = actualFilePath.startsWith("./")
+        ? actualFilePath
+        : `./${actualFilePath}`;
+    }
 
-        await updateFileStatus(fileId, ProcessStatus.SUCCESS, recordsProcessed);
-        Logger.info(
-          `File ${fileId} processed successfully. Records: ${recordsProcessed}`
-        );
-      } else {
-        await updateFileStatus(
-          fileId,
-          ProcessStatus.FAILED,
-          0,
-          "Simulation error: Invalid Excel format"
-        );
-        Logger.error(`File ${fileId} processing failed`);
-      }
-    } catch (error) {
+    if (!actualFilePath) {
+      throw new Error("File path is missing");
+    }
+
+    Logger.info(
+      `Processing Excel file: ${fileRecord.filename} at ${actualFilePath}`
+    );
+
+    const parseResult = await ExcelParser.parseExcelFile(
+      actualFilePath,
+      fileId
+    );
+
+    if (parseResult.success) {
+      await updateFileStatus(
+        fileId,
+        ProcessStatus.SUCCESS,
+        parseResult.recordsProcessed
+      );
+      Logger.info(
+        `File ${fileId} processed successfully. Records: ${parseResult.recordsProcessed}`
+      );
+    } else {
       await updateFileStatus(
         fileId,
         ProcessStatus.FAILED,
         0,
-        "Unexpected processing error"
+        parseResult.errorMessage || "Unknown parsing error"
       );
-      Logger.error(`File ${fileId} processing error: ${error}`);
+      Logger.error(
+        `File ${fileId} processing failed: ${parseResult.errorMessage}`
+      );
     }
-  }, processingTime);
+  } catch (error) {
+    await updateFileStatus(
+      fileId,
+      ProcessStatus.FAILED,
+      0,
+      error instanceof Error ? error.message : "Unexpected processing error"
+    );
+    Logger.error(`File ${fileId} processing error:`, error);
+  }
 }
 
 async function updateFileStatus(

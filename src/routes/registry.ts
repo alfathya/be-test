@@ -3,9 +3,9 @@ import AuthRoutes from "./Auth";
 import UploadRoutes from "./Upload";
 
 const RoutesRegistry = {
-    ExampleRoutes,
-    AuthRoutes,
-    UploadRoutes
+  ExampleRoutes,
+  AuthRoutes,
+  UploadRoutes,
 };
 
 export default RoutesRegistry;

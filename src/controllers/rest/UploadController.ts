@@ -9,6 +9,8 @@ export async function upload(req: Request, res: Response): Promise<Response> {
     const userId = req.user!.id;
     const { file } = req;
 
+    console.log("File upload request received:", file);
+
     if (!file) {
       return res.status(400).json({
         status: false,

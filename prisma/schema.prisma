@@ -47,6 +47,9 @@ model FileUpload {
   
   // Relations
   user        User          @relation(fields: [uploadedBy], references: [id])
+  productData ProductData[] // One file can have many products
+  personData  PersonData[]    // One file can have many users  
+  salesData   SalesData[]   // One file can have many sales
   
   @@map("file_uploads")
 }
@@ -61,4 +64,61 @@ enum ProcessStatus {
 enum UserRole {
   USER
   ADMIN
+}
+
+model ProductData {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String?
+  price       Decimal?
+  quantity    Int?
+  description String?  @db.Text
+  sku         String?
+  
+  // Relation ke file upload
+  fileUploadId Int
+  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id])
+  
+  // Audit fields
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("product_data")
+}
+
+model PersonData {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  email       String
+  phone       String?
+  address     String?  @db.Text
+  dateOfBirth DateTime?
+  department  String?
+  
+  fileUploadId Int
+  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("user_data")
+}
+
+model SalesData {
+  id          Int      @id @default(autoincrement())
+  productName String
+  customerName String
+  quantity    Int
+  unitPrice   Decimal
+  totalAmount Decimal
+  saleDate    DateTime
+  region      String?
+  
+  fileUploadId Int
+  fileUpload   FileUpload @relation(fields: [fileUploadId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("sales_data")
 }

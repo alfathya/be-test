@@ -15,14 +15,14 @@ export async function uploadFile(
   userId: number
 ): Promise<ServiceResponse<any>> {
   try {
-    // Generate filename untuk memory storage
-    const timestamp = Date.now();
-    const filename = `${timestamp}-${fileData.originalname}`;
+    // Multer diskStorage sudah generate filename unik
+    const filename = fileData.filename;
+    const filePath = fileData.path;
 
     const data = {
       filename: filename,
       originalName: fileData.originalname,
-      filePath: fileData.path || null,
+      filePath: filePath,
       fileUrl: `/uploads/${filename}`,
       uploadedBy: userId,
       status: ProcessStatus.PENDING,
@@ -30,6 +30,7 @@ export async function uploadFile(
 
     const recordFile = await prisma.fileUpload.create({ data });
 
+    // Start background processing
     processExcelFile(recordFile.id);
 
     return {

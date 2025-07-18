@@ -1,6 +1,24 @@
 import multer from "multer";
+import path from "path";
+import fs from "fs";
 
-const storage = multer.memoryStorage();
+// Pastikan direktori uploads ada
+const uploadsDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    // Generate unique filename dengan timestamp
+    const timestamp = Date.now();
+    const filename = `${timestamp}-${file.originalname}`;
+    cb(null, filename);
+  },
+});
 
 const fileFilter = (req: any, file: any, cb: any) => {
   // Hanya terima Excel dan CSV
