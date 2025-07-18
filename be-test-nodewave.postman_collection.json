@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "77e1e6c8-de4e-4ab9-9e37-138f971bdffc",
+		"name": "be-test-nodewave",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17489214"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"samantha@example.test\",\r\n    \"password\": \"Pass123!!\",\r\n    \"confirmPassword\": \"Pass123!!\",\r\n    \"firstName\": \"Samantha\",\r\n    \"lastName\": \"Rose\",\r\n    \"phoneNumber\": \"+6772833\",\r\n    \"country\": \"Indonesia\",\r\n    \"aboutYou\": \"Test user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{L5000}}/auth/register",
+					"host": [
+						"{{L5000}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"johndoe@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{L5000}}/auth/login",
+					"host": [
+						"{{L5000}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload-file",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accesstoken",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwiZnVsbE5hbWUiOiJKb2huRG9lIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTI4Mjc1MDksImV4cCI6MTc1MjkxMzkwOX0.-e5Kbms4Zwop1rWf9HMCtwlmNiqXy3yH0lsipkj7WKg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/acer/OneDrive/Documents/personal-project/be-test/uploads/sample-sales.xlsx"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{L5000}}/upload/",
+					"host": [
+						"{{L5000}}"
+					],
+					"path": [
+						"upload",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get files by user id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accesstoken",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJsaWx5QGV4YW1wbGUudGVzdCIsImZ1bGxOYW1lIjoibGlsaWFuYURvZSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUyODIzMzAwLCJleHAiOjE3NTI5MDk3MDB9.t0M7V-0-0qF7OmQspqfJRLwqGhDCHxg6YfQVDKHOnZg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{L5000}}/upload/files?status=SUCCESS",
+					"host": [
+						"{{L5000}}"
+					],
+					"path": [
+						"upload",
+						"files"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "SUCCESS"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get file by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accesstoken",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwiZnVsbE5hbWUiOiJKb2huRG9lIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTI4Mjc1MDksImV4cCI6MTc1MjkxMzkwOX0.-e5Kbms4Zwop1rWf9HMCtwlmNiqXy3yH0lsipkj7WKg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{L5000}}/upload/file/12",
+					"host": [
+						"{{L5000}}"
+					],
+					"path": [
+						"upload",
+						"file",
+						"12"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
